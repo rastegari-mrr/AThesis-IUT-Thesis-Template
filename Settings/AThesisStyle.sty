@@ -19,6 +19,9 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{AThesisStyle}[Dec. 27, 2015 AThesisStyle Package]
 % ░░░░░░░▒▒▒▒▒▒▓▓▓▓ Packages ▓▓▓▓▒▒▒▒▒▒░░░░░░░
+% استفاده از دستور xpatchcmd
+\usepackage{xpatch}
+
 % تایپ متن‌های ریاضی
 \usepackage{amsthm,amsmath,amssymb,amsfonts,bm,upgreek}
 
@@ -65,6 +68,18 @@
 
 % تنظیم جدول ها
 \usepackage{array}
+
+% ترتیبی شرکت شماره فصل (اول، دوم و ...) در فهرست مطالب(فصل اول:)
+% از آنجایی که بسته hperref نیز تعریف ماکرو @chapter را  تغییر می دهد، این لیست دستورات باید قبل از این بسته نوشته شوند
+\makeatletter
+\xpatchcmd{\@chapter}{%
+	\addcontentsline{toc}{chapter}%
+	{\protect\numberline{\thechapter}#1}%
+}{%
+	\addcontentsline{toc}{chapter}%
+	{\protect\numberline{\chaptername~\tartibi{chapter}}#1}%
+}{}{}
+\makeatother
 
 % ایجاد لینک‌های رنگی با امکان جهش
 \usepackage{hyperref}
@@ -193,7 +208,7 @@
 %\DeclareMathSizes{10}{12}{10}{8} % Font 12
 
 % انگليسی کردن اعداد در فرمول‌ها
-\DefaultMathsDigits
+\DefaultMathDigits
 %\AutoMathsDigits %By default this command is active: In Persian mode, you get Persian digits in math mode and in Latin mode, you get TEX’s default font and digits in math mode.
 
 % تعیین فونت اعداد در فرمول‌ها
@@ -477,17 +492,9 @@
 %  }%
 %}
 
-% اضافه کردن "فصل" و ":" در ابتدای فصل‌ها در فهرست مطالب بصورت: "فصل اول:"
+% اضافه کردن ":" در انتهای فصل‌ها در فهرست مطالب بصورت: "فصل اول:"
+% ترتیبی شرکت شماره فصل (اول، دوم و ...) در فهرست مطالب در ابتدای صفحه انجام شد
 \renewcommand\cftchapaftersnum{:}
-\makeatletter
-\bidi@patchcmd{\Hy@org@chapter}{%
-	\addcontentsline{toc}{chapter}%
-	{\protect\numberline{\thechapter}#1}%
-}{%
-\addcontentsline{toc}{chapter}%
-{\protect\numberline{\chaptername~\tartibi{chapter}}#1}%
-}{}{}
-\makeatother
 
 % ░░░░░░░▒▒▒▒▒▒▓▓▓▓ Some Definitions ▓▓▓▓▒▒▒▒▒▒░░░░░░░
 \makeatletter
